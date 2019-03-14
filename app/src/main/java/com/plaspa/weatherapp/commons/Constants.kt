@@ -14,5 +14,7 @@ class Constants {
         const val QUERY_API_KEY : String = "APPID"
         const val QUERY_Q : String = "q"
 
+        const val SHARED_PREF : String = "sharedPreference"
+        const val SHARED_COUNTRY : String = "sharedPreference_country"
     }
 }

@@ -5,4 +5,17 @@
     <string name="errorService">Error calling service API</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="refresh">Refresh</string>
+
+    <string name="country_hint">Choose a country</string>
+
+    <string-array name="countries_array">
+        <item>Argentina</item>
+        <item>Brazil</item>
+        <item>Chile</item>
+        <item>Croatia</item>
+        <item>Cuba</item>
+        <item>Germany</item>
+        <item>Japan</item>
+        <item>Mexico</item>
+    </string-array>
 </resources>
