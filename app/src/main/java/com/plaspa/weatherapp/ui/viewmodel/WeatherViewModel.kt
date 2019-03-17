@@ -15,6 +15,7 @@ import com.plaspa.weatherapp.model.WeatherResponse
 class WeatherViewModel @Inject constructor(private val weatherRepository: WeatherRepository, private val networkHandler: NetworkHandler) : ViewModel() {
 
     var showProgressObs = ObservableField<Boolean>()
+    var hasData = ObservableField<Boolean>()
 
     var weatherMethods: MutableLiveData<WeatherResponse> = MutableLiveData()
 
@@ -23,14 +24,17 @@ class WeatherViewModel @Inject constructor(private val weatherRepository: Weathe
 
     init {
         showProgressObs.set(false)
+        hasData.set(false)
     }
 
     fun getWeatherMethods(place: String) {
         when (networkHandler.isConnected) {
             true -> {
+                weatherMethods.value = null
                 showProgressObs.set(true)
                 weatherRepository.getWeatherMethods(place).subscribe({ weather ->
                     showProgressObs.set(false)
+                    hasData.set(true)
                     weatherMethods.value = weather
                 }, this::handleError)
             }
@@ -40,6 +44,7 @@ class WeatherViewModel @Inject constructor(private val weatherRepository: Weathe
 
     private fun handleError(error: Throwable) {
         showProgressObs.set(false)
+        hasData.set(false)
         Log.e(WeatherViewModel::class.java.name, error.message + error.cause)
         errorService.value = true
     }

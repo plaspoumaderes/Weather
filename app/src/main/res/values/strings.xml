@@ -7,9 +7,10 @@
     <string name="refresh">Refresh</string>
 
     <string name="country_hint">Choose a country</string>
+    <string name="no_tiene_data">No tiene data</string>
 
     <string-array name="countries_array">
-        <item>Argentina</item>
+        <item>Argentine</item>
         <item>Brazil</item>
         <item>Chile</item>
         <item>Croatia</item>

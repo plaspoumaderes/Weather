@@ -40,20 +40,25 @@ class MainFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(WeatherViewModel::class.java)
-        activity?.let {
-            sharedPreference =  it.getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE)
-            if (sharedPreference.contains(Constants.SHARED_COUNTRY)) {
-                viewModel.getWeatherMethods(sharedPreference.getString(Constants.SHARED_COUNTRY,""))
-            }
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         mBinding = DataBindingUtil.inflate(inflater,layoutId(), container, false)
         mBinding.viewModel = viewModel
-        val rootView = mBinding.root
-        rootView.fr_main_country_spinner.onItemSelectedListener = this
-        return rootView
+        return mBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        fr_main_country_spinner.onItemSelectedListener = this
+
+        activity?.let {
+            sharedPreference =  it.getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE)
+            if (sharedPreference.contains(Constants.SHARED_COUNTRY)) {
+                fr_main_country_spinner.setSelection(sharedPreference.getInt(Constants.SHARED_POSITION,0))
+                viewModel.getWeatherMethods(sharedPreference.getString(Constants.SHARED_COUNTRY,""))
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -65,6 +70,7 @@ class MainFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
     private fun loadWeatherMethod(weatherResponse: WeatherResponse?) {
         Log.i("Weather", weatherResponse.toString())
+
         weatherResponse?.let {
             fr_main_temp_txt.text = "${it.main.temp} °C"
             fr_main_temp_min_max_txt.text = "${it.main.temp_min} / ${it.main.temp_max}"
@@ -83,8 +89,8 @@ class MainFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
             viewModel.getWeatherMethods(country)
             var editor : SharedPreferences.Editor = sharedPreference.edit()
             editor.putString(Constants.SHARED_COUNTRY, country)
+            editor.putInt(Constants.SHARED_POSITION, position)
             editor.commit()
-
         }
     }
 

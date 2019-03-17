@@ -16,5 +16,6 @@ class Constants {
 
         const val SHARED_PREF : String = "sharedPreference"
         const val SHARED_COUNTRY : String = "sharedPreference_country"
+        const val SHARED_POSITION : String = "sharedPreference_position"
     }
 }
