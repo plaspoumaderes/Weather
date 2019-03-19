@@ -1,7 +1,8 @@
 package com.plaspa.weatherapp.ui.repositories
 
 import com.plaspa.weatherapp.commons.Constants
-import com.plaspa.weatherapp.model.WeatherResponse
+import com.plaspa.weatherapp.model.Forecast
+import com.plaspa.weatherapp.model.Weather
 import com.plaspa.weatherapp.ui.services.WeatherServices
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,12 +20,20 @@ class WeatherRepository @Inject constructor(retrofit: Retrofit) {
 
     private val payApi by lazy { retrofit.create(WeatherServices::class.java) }
 
-    fun getWeatherMethods(place: String): Observable<WeatherResponse> {
-        return payApi.getWeatherMethods(Constants.API_KEY, place)
+    fun getWeatherMethods(place: String): Observable<Weather> {
+        return payApi.getWeather(Constants.API_KEY, place, Constants.CENTIGRADO)
                 .concatMap { httpValidation(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
+
+    fun getForecastMethods(id: Int): Observable<Forecast> {
+        return payApi.getForecast(Constants.API_KEY, id, 5, Constants.CENTIGRADO)
+                .concatMap { httpValidation(it) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
 
     private fun <T> httpValidation(response: Response<T>): Observable<T> {
         return Observable.fromCallable {

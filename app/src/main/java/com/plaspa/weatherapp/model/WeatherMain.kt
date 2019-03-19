@@ -5,8 +5,8 @@ package com.plaspa.weatherapp.model
  */
 class WeatherMain(
         var temp: Double,
-        var pressure: Int,
-        var humidity: Int,
+        var pressure: Double,
+        var humidity: Double,
         var temp_min: Double,
         var temp_max: Double
 )

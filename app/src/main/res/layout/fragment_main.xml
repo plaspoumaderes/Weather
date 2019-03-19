@@ -34,6 +34,7 @@
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginStart="@dimen/fab_margin"
             android:layout_marginTop="@dimen/fab_margin"
+            android:backgroundTint="@color/white"
             android:entries="@array/countries_array"
             android:gravity="center"
             android:padding="8dp"
@@ -52,67 +53,82 @@
             android:padding="8dp"
             android:text="@string/no_tiene_data"
             android:textColor="@color/white"
-            android:textSize="@dimen/txt_big"
-            android:visibility="@{safeUnbox(viewModel.hasData) ? View.GONE : View.VISIBLE}"
+            android:textSize="@dimen/txt_normal"
+            android:visibility="@{safeUnbox(viewModel.hasWeather) ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="@{safeUnbox(viewModel.hasData) ? View.VISIBLE : View.GONE}"
+            android:visibility="@{safeUnbox(viewModel.hasWeather) ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fr_main_country_spinner">
 
-            <TextView
-                android:id="@+id/fr_main_temp_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/current_weather_lay"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/txt_bigger"
+                android:background="@drawable/circle_black_trans"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="23 °C" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/fr_main_temp_img"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/fr_main_temp_txt"
-                app:layout_constraintStart_toEndOf="@+id/fr_main_temp_txt"
-                app:layout_constraintTop_toTopOf="@+id/fr_main_temp_txt"
-                tools:src="@mipmap/ic_launcher_round" />
+                <TextView
+                    android:id="@+id/fr_main_temp_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/txt_bigger"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="23°C" />
 
-            <TextView
-                android:id="@+id/fr_main_temp_min_max_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/txt_normal_up"
-                app:layout_constraintEnd_toEndOf="@+id/fr_main_temp_txt"
-                app:layout_constraintStart_toStartOf="@+id/fr_main_temp_txt"
-                app:layout_constraintTop_toBottomOf="@+id/fr_main_temp_txt"
-                tools:text="18 / 25" />
+                <ImageView
+                    android:id="@+id/fr_main_temp_img"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/fr_main_temp_txt"
+                    app:layout_constraintStart_toEndOf="@+id/fr_main_temp_txt"
+                    app:layout_constraintTop_toTopOf="@+id/fr_main_temp_txt"
+                    tools:src="@mipmap/ic_launcher_round" />
 
-            <TextView
-                android:id="@+id/fr_main_weather_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/txt_big"
-                app:layout_constraintEnd_toEndOf="@+id/fr_main_temp_txt"
-                app:layout_constraintStart_toStartOf="@+id/fr_main_temp_txt"
-                app:layout_constraintTop_toBottomOf="@+id/fr_main_temp_min_max_txt"
-                tools:text="scattered clouds" />
+                <TextView
+                    android:id="@+id/fr_main_temp_min_max_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/txt_normal_up"
+                    app:layout_constraintBottom_toTopOf="@+id/fr_main_temp_txt"
+                    app:layout_constraintEnd_toEndOf="@+id/fr_main_temp_txt"
+                    app:layout_constraintStart_toStartOf="@+id/fr_main_temp_txt"
+                    tools:text="18 / 25" />
+
+                <TextView
+                    android:id="@+id/fr_main_weather_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/txt_big"
+                    app:layout_constraintEnd_toEndOf="@+id/fr_main_temp_txt"
+                    app:layout_constraintStart_toStartOf="@+id/fr_main_temp_txt"
+                    app:layout_constraintTop_toBottomOf="@+id/fr_main_temp_txt"
+                    tools:text="scattered clouds" />
+
+            </android.support.constraint.ConstraintLayout>
 
 
             <android.support.constraint.ConstraintLayout
@@ -120,12 +136,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/border_black_trans"
                 android:padding="16dp"
+                android:visibility="@{safeUnbox(viewModel.forecastCount > 0) ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fr_main_weather_desc">
+                app:layout_constraintTop_toBottomOf="@+id/current_weather_lay">
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/first_day_lay"
@@ -140,7 +157,7 @@
                         android:id="@+id/first_day_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="23 °C"
+                        android:text="23°C"
                         android:textColor="@color/white"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -163,6 +180,7 @@
                     android:id="@+id/second_day_lay"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:visibility="@{safeUnbox(viewModel.forecastCount > 1) ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toStartOf="@+id/third_day_lay"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/first_day_lay"
@@ -172,7 +190,7 @@
                         android:id="@+id/second_day_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="23 °C"
+                        android:text="23°C"
                         android:textColor="@color/white"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -193,6 +211,7 @@
                     android:id="@+id/third_day_lay"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:visibility="@{safeUnbox(viewModel.forecastCount > 2) ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toStartOf="@+id/fourth_day_lay"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/second_day_lay"
@@ -202,7 +221,7 @@
                         android:id="@+id/third_day_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="23 °C"
+                        android:text="23°C"
                         android:textColor="@color/white"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -225,7 +244,8 @@
                     android:id="@+id/fourth_day_lay"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:visibility="@{safeUnbox(viewModel.forecastCount > 3) ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toStartOf="@+id/five_day_lay"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/third_day_lay"
                     app:layout_constraintTop_toTopOf="@+id/first_day_lay">
@@ -234,7 +254,7 @@
                         android:id="@+id/fourth_day_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="23 °C"
+                        android:text="23°C"
                         android:textColor="@color/white"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -251,11 +271,38 @@
                         tools:src="@mipmap/ic_launcher_round" />
                 </android.support.constraint.ConstraintLayout>
 
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/five_day_lay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{safeUnbox(viewModel.forecastCount > 4) ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/fourth_day_lay"
+                    app:layout_constraintTop_toTopOf="@+id/first_day_lay">
+
+                    <TextView
+                        android:id="@+id/five_day_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="23°C"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/five_day_img"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/five_day_txt"
+                        tools:src="@mipmap/ic_launcher_round" />
+                </android.support.constraint.ConstraintLayout>
             </android.support.constraint.ConstraintLayout>
-
-
         </android.support.constraint.ConstraintLayout>
-
 
         <FrameLayout
             android:layout_width="match_parent"

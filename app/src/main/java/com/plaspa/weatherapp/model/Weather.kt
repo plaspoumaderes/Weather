@@ -3,7 +3,7 @@ package com.plaspa.weatherapp.model
 /**
  * Created by Pedro on 13/03/2019.
  */
-class WeatherResponse(
+class Weather(
         var coord: Coordenadas,
         var weather: List<WeatherState>,
         var base: String,

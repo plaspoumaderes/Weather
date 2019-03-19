@@ -17,10 +17,10 @@ import com.plaspa.weatherapp.commons.Constants
 import com.plaspa.weatherapp.commons.base.BaseFragment
 import com.plaspa.weatherapp.commons.extension.loadFromUrl
 import com.plaspa.weatherapp.databinding.FragmentMainBinding
-import com.plaspa.weatherapp.model.WeatherResponse
+import com.plaspa.weatherapp.model.Forecast
+import com.plaspa.weatherapp.model.Weather
 import com.plaspa.weatherapp.ui.viewmodel.WeatherViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlin.properties.Delegates
 
 /**
@@ -43,7 +43,7 @@ class MainFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        mBinding = DataBindingUtil.inflate(inflater,layoutId(), container, false)
+        mBinding = DataBindingUtil.inflate(inflater, layoutId(), container, false)
         mBinding.viewModel = viewModel
         return mBinding.root
     }
@@ -53,10 +53,10 @@ class MainFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         fr_main_country_spinner.onItemSelectedListener = this
 
         activity?.let {
-            sharedPreference =  it.getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE)
+            sharedPreference = it.getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE)
             if (sharedPreference.contains(Constants.SHARED_COUNTRY)) {
-                fr_main_country_spinner.setSelection(sharedPreference.getInt(Constants.SHARED_POSITION,0))
-                viewModel.getWeatherMethods(sharedPreference.getString(Constants.SHARED_COUNTRY,""))
+                fr_main_country_spinner.setSelection(sharedPreference.getInt(Constants.SHARED_POSITION, 0))
+                viewModel.getWeatherMethods(sharedPreference.getString(Constants.SHARED_COUNTRY, ""))
             }
         }
     }
@@ -64,14 +64,13 @@ class MainFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.weatherMethods.reObserve(this, Observer { loadWeatherMethod(it) })
+        viewModel.forecastMethods.reObserve(this, Observer { loadForecastMethod(it) })
         viewModel.errorConnection.reObserve(this, Observer { showErrorHandler(it) })
         viewModel.errorService.reObserve(this, Observer { showToast(getString(R.string.errorService), Toast.LENGTH_SHORT) })
     }
 
-    private fun loadWeatherMethod(weatherResponse: WeatherResponse?) {
-        Log.i("Weather", weatherResponse.toString())
-
-        weatherResponse?.let {
+    private fun loadWeatherMethod(weather: Weather?) {
+        weather?.let {
             fr_main_temp_txt.text = "${it.main.temp} °C"
             fr_main_temp_min_max_txt.text = "${it.main.temp_min} / ${it.main.temp_max}"
             if (it.weather.isNotEmpty()) {
@@ -80,6 +79,45 @@ class MainFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                 fr_main_temp_img.loadFromUrl(url)
                 fr_main_weather_desc.text = weather.description
             }
+            viewModel.getForecastMethods(it.id)
+        }
+    }
+
+
+    private fun loadForecastMethod(forecast: Forecast?) {
+        forecast?.let {
+            it.list.forEachIndexed { index, weather ->
+                loadForecastItem(index, weather)
+            }
+        }
+    }
+
+    private fun loadForecastItem(position: Int, weather: Weather) {
+        var url = ""
+        if (weather.weather.isNotEmpty()) {
+            url = "http://openweathermap.org/img/w/${weather.weather[0].icon}.png"
+        }
+        when (position) {
+            0 -> {
+                first_day_txt.text = "${weather.main.temp.toInt()}°C"
+                first_day_img.loadFromUrl(url)
+            }
+            1 -> {
+                second_day_txt.text = "${weather.main.temp.toInt()}°C"
+                second_day_img.loadFromUrl(url)
+            }
+            2 -> {
+                third_day_txt.text = "${weather.main.temp.toInt()}°C"
+                third_day_img.loadFromUrl(url)
+            }
+            3 -> {
+                fourth_day_txt.text = "${weather.main.temp.toInt()}°C"
+                fourth_day_img.loadFromUrl(url)
+            }
+            4 -> {
+                five_day_txt.text = "${weather.main.temp.toInt()}°C"
+                five_day_img.loadFromUrl(url)
+            }
         }
     }
 
@@ -87,7 +125,7 @@ class MainFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         context?.let {
             val country = it.resources.getStringArray(R.array.countries_array)[position]
             viewModel.getWeatherMethods(country)
-            var editor : SharedPreferences.Editor = sharedPreference.edit()
+            var editor: SharedPreferences.Editor = sharedPreference.edit()
             editor.putString(Constants.SHARED_COUNTRY, country)
             editor.putInt(Constants.SHARED_POSITION, position)
             editor.commit()
