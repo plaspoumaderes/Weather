@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -123,7 +122,7 @@ class MainFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         context?.let {
-            val country = it.resources.getStringArray(R.array.countries_array)[position]
+            val country = it.resources.getStringArray(R.array.city_array)[position]
             viewModel.getWeatherMethods(country)
             var editor: SharedPreferences.Editor = sharedPreference.edit()
             editor.putString(Constants.SHARED_COUNTRY, country)

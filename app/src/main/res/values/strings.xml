@@ -6,10 +6,10 @@
     <string name="no_internet_connection">No internet connection</string>
     <string name="refresh">Refresh</string>
 
-    <string name="country_hint">Choose a country</string>
-    <string name="no_tiene_data">No tiene data</string>
+    <string name="city_hint">Choose a city</string>
+    <string name="no_data">No tiene data</string>
 
-    <string-array name="countries_array">
+    <string-array name="city_array">
         <item>Buenos Aires, AR</item>
         <item>Brasília, BR</item>
         <item>Zagreb, HR</item>
