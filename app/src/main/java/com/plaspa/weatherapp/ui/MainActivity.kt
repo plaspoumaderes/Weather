@@ -14,6 +14,6 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initializeFragment() {
-        replaceFragment(false, R.id.fragment_container, MainFragment.newInstance(), Bundle(), true)
+        replaceFragment(R.id.fragment_container, MainFragment.newInstance(), Bundle(), true)
     }
 }

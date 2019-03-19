@@ -15,6 +15,7 @@ import com.plaspa.weatherapp.R
 import com.plaspa.weatherapp.commons.Constants
 import com.plaspa.weatherapp.commons.base.BaseFragment
 import com.plaspa.weatherapp.commons.extension.loadFromUrl
+import com.plaspa.weatherapp.commons.utils.UrlUtil
 import com.plaspa.weatherapp.databinding.FragmentMainBinding
 import com.plaspa.weatherapp.model.Forecast
 import com.plaspa.weatherapp.model.Weather
@@ -74,7 +75,7 @@ class MainFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
             fr_main_temp_min_max_txt.text = "${it.main.temp_min} / ${it.main.temp_max}"
             if (it.weather.isNotEmpty()) {
                 val weather = it.weather[0]
-                val url = "http://openweathermap.org/img/w/${weather.icon}.png"
+                val url = UrlUtil.createIconUrl(weather.icon)
                 fr_main_temp_img.loadFromUrl(url)
                 fr_main_weather_desc.text = weather.description
             }
@@ -92,10 +93,7 @@ class MainFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     }
 
     private fun loadForecastItem(position: Int, weather: Weather) {
-        var url = ""
-        if (weather.weather.isNotEmpty()) {
-            url = "http://openweathermap.org/img/w/${weather.weather[0].icon}.png"
-        }
+        val url = if (weather.weather.isNotEmpty()) UrlUtil.createIconUrl(weather.weather[0].icon) else ""
         when (position) {
             0 -> {
                 first_day_txt.text = "${weather.main.temp.toInt()}°C"
