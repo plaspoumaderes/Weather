@@ -1,7 +1,7 @@
 package com.plaspa.weatherapp.di.module
 
-import com.plaspa.weatherapp.commons.Constants
 import com.plaspa.weatherapp.WeatherApplication
+import com.plaspa.weatherapp.commons.Constants
 import com.plaspa.weatherapp.ui.repositories.WeatherRepository
 import dagger.Module
 import dagger.Provides
@@ -31,7 +31,7 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun providePayRepository(retrofit: Retrofit): WeatherRepository = WeatherRepository(retrofit)
+    fun provideWeatherRepository(retrofit: Retrofit): WeatherRepository = WeatherRepository(retrofit)
 
     private fun createClient(): OkHttpClient {
         val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()

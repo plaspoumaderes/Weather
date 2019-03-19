@@ -18,17 +18,17 @@ import javax.inject.Inject
  */
 class WeatherRepository @Inject constructor(retrofit: Retrofit) {
 
-    private val payApi by lazy { retrofit.create(WeatherServices::class.java) }
+    private val weatherApi by lazy { retrofit.create(WeatherServices::class.java) }
 
     fun getWeatherMethods(place: String): Observable<Weather> {
-        return payApi.getWeather(Constants.API_KEY, place, Constants.CENTIGRADO)
+        return weatherApi.getWeather(Constants.API_KEY, place, Constants.CENTIGRADO)
                 .concatMap { httpValidation(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun getForecastMethods(id: Int): Observable<Forecast> {
-        return payApi.getForecast(Constants.API_KEY, id, 5, Constants.CENTIGRADO)
+        return weatherApi.getForecast(Constants.API_KEY, id, 5, Constants.CENTIGRADO)
                 .concatMap { httpValidation(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
